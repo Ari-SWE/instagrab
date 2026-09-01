@@ -1,1 +1,0 @@
-{"version":3,"file":"storiesController.d.ts","sourceRoot":"","sources":["../../src/controllers/storiesController.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,QAAQ,EAAE,YAAY,EAAE,MAAM,SAAS,CAAC;AAC1D,OAAO,EAAE,gBAAgB,EAAE,MAAM,8BAA8B,CAAC;AAEhE,wBAAgB,uBAAuB,CAAC,OAAO,EAAE,gBAAgB,IACjD,KAAK,OAAO,EAAE,KAAK,QAAQ,EAAE,MAAM,YAAY,KAAG,OAAO,CAAC,IAAI,CAAC,CAc9E"}

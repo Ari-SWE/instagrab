@@ -162,12 +162,12 @@ export class WebsiteInstagramDataProvider implements InstagramDataProvider {
       try {
         await page.goto(`https://storiesig.info/en7jr/`, {
           waitUntil: 'domcontentloaded',
-          timeout: 25000,
+          timeout: 30000,
         });
 
-        await page.waitForSelector('input', { timeout: 10000 });
+        await page.waitForSelector('input', { timeout: 20000 });
         await page.click('input');
-        await page.type('input', username, { delay: 40 });
+        await page.type('input', username, { delay: 30 });
         await page.keyboard.press('Enter');
 
         // Also trigger search button if available
@@ -176,27 +176,28 @@ export class WebsiteInstagramDataProvider implements InstagramDataProvider {
           if (btn) (btn as HTMLElement).click();
         });
 
-        // Wait 5s for search results, Vue components, and event listeners to mount
-        await new Promise((r) => setTimeout(r, 5000));
+        // Dynamically wait for results / tabs to mount
+        await page.waitForSelector('.tabs-component__tabs, .tabs-component__button, .profile-header', { timeout: 15000 }).catch(() => null);
+        await new Promise((r) => setTimeout(r, 2000));
 
-        // Click Stories tab explicitly (.tabs-component__button with text 'stories')
+        // Click Stories tab explicitly (.tabs-component__button with exact text 'stories')
         await page.evaluate(() => {
-          const btns = Array.from(document.querySelectorAll('.tabs-component__button'));
+          const btns = Array.from(document.querySelectorAll('.tabs-component__button, [role="tab"] button, [role="tab"]'));
           const btn = btns.find((b) => (b.textContent || '').trim().toLowerCase() === 'stories');
           if (btn) (btn as HTMLElement).click();
         });
 
-        // Wait 3.5s for stories API response
+        // Wait for stories API response
         await new Promise((r) => setTimeout(r, 3500));
 
-        // Click Highlights tab explicitly (.tabs-component__button with text 'highlights')
+        // Click Highlights tab explicitly (.tabs-component__button with exact text 'highlights')
         await page.evaluate(() => {
-          const btns = Array.from(document.querySelectorAll('.tabs-component__button'));
+          const btns = Array.from(document.querySelectorAll('.tabs-component__button, [role="tab"] button, [role="tab"]'));
           const btn = btns.find((b) => (b.textContent || '').trim().toLowerCase() === 'highlights');
           if (btn) (btn as HTMLElement).click();
         });
 
-        // Wait 3.5s for highlights API response
+        // Wait for highlights API response
         await new Promise((r) => setTimeout(r, 3500));
       } catch (err: any) {
         logger.warn(`storiesig extraction error: ${err.message}`);
